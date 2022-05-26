@@ -1,0 +1,56 @@
+<form [formGroup]="userCarChoice" class="form-container">
+    <div class="field">
+        <mat-label for="name">Name: </mat-label>
+        <div class="input-container">
+            <input matInput id="name" type="text" class="input-field" formControlName="name">
+            <mat-error *ngIf="name && name.invalid && (name.dirty || name.touched)">car name is required </mat-error>
+        </div>
+    </div>
+    <div class="field">
+        <mat-label for="model">model: </mat-label>
+        <div class="input-container">
+            <input matInput id="model" type="text" class="input-field" formControlName="model">
+            <mat-error *ngIf="model && model.invalid && (model.dirty || model.touched)">model is required </mat-error>
+        </div>
+    </div>
+    
+    <div class="field">
+        <mat-label for="color">Select price: </mat-label>
+        <mat-form-field appearance="fill" class="price">
+            <mat-label>Prices</mat-label>
+            <mat-select *ngIf="price" formControlName="price" multiple>
+              <mat-select-trigger>
+                {{price?.value ? price?.value[0] : ''}}
+                <span *ngIf="price?.value?.length > 1" class="example-additional-selection">
+                  (+{{price?.value.length - 1}} {{price?.value?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger>
+              <mat-option *ngFor="let pricing of priceList" [value]="pricing">{{pricing}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <mat-error *ngIf="price && price.invalid && (price.dirty || price.touched)">price is required </mat-error>
+    </div>
+    <div class="field">
+        <mat-label for="roadAgeFrom">Road Age Range: </mat-label>
+        <mat-form-field class="example-form-field" appearance="fill">
+            <mat-label>Road age range</mat-label>
+            <mat-date-range-input
+              [formGroup]="userCarChoice"
+              [rangePicker]="userCarChoicePicker">
+              <input matStartDate placeholder="Start date" formControlName="roadAgeFrom">
+              <input matEndDate placeholder="End date" formControlName="roadAgeTo">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="userCarChoicePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #userCarChoicePicker></mat-date-range-picker>
+            <mat-error>Road age range is required </mat-error>
+          </mat-form-field>
+    </div>
+    <div class="field">
+        <mat-checkbox class="example-margin" formControlName="withInsurance">withInsurance</mat-checkbox>
+    </div>
+
+    <div class="field">
+        <button mat-raised-button color="primary" (click)="submitUserChoice()">Submit</button>
+    </div>
+</form>

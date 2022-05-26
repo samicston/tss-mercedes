@@ -1,0 +1,28 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  margin-top: 5%;
+  font-size: medium;
+}
+
+.input-field {
+  height: 28px;
+  width: 94%;
+}
+
+.input-container {
+  width: 46.5%;
+}
+
+.price {
+  width: 48%;
+}
