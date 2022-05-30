@@ -10,10 +10,20 @@ export class MatricsDataService {
   constructor(private http: HttpClient) {}
 
   createUserCarChoice(carData: CarDataDTO): Observable<number> {
-    return this.http.post<number>('/', carData);
+    console.log(carData, '+++d');
+    return this.http.post<number>(
+      '/api/center-matrix/',
+      carData
+    );
   }
 
-  getListOfUsersCarChoice(search: string | undefined): Observable<CarDataDTO[]> {
-    return search ? this.http.get<CarDataDTO[]>(`/search?${search}`) : this.http.get<CarDataDTO[]>(`/search`);
+  getListOfUsersCarChoice(
+    search: string | undefined
+  ): Observable<CarDataDTO[]> {
+    return search
+      ? this.http.get<CarDataDTO[]>(
+          `http://localhost:3400/api/center-matrix?${search}`
+        )
+      : this.http.get<CarDataDTO[]>(`http://localhost:3400/api/center-matrix`);
   }
 }
