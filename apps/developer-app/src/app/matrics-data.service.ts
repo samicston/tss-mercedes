@@ -22,8 +22,8 @@ export class MatricsDataService {
   ): Observable<CarDataDTO[]> {
     return search
       ? this.http.get<CarDataDTO[]>(
-          `http://localhost:3400/api/center-matrix?${search}`
+          `/api/center-matrix?${search}`
         )
-      : this.http.get<CarDataDTO[]>(`http://localhost:3400/api/center-matrix`);
+      : this.http.get<CarDataDTO[]>(`/api/center-matrix`);
   }
 }
