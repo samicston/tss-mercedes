@@ -12,7 +12,8 @@
     "module": "esnext",
     "lib": [
       "es2017",
-      "dom"
+      "dom",
+      "esnext.asynciterable"
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -24,7 +25,8 @@
       "@tss/ctrm-backend": [
         "libs/backend/center-matrix/src/index.ts"
       ]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",

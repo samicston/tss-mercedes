@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatricsDataService } from '../matrics-data.service';
+import { Subscription } from 'rxjs';
+import { MatricsDataSubmissionService } from '../matrics-data.service';
 import { dateLessThan } from './create.util';
 
 @Component({
@@ -13,7 +14,7 @@ import { dateLessThan } from './create.util';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent {
+export class CreateComponent implements OnDestroy {
   public userCarChoice = this.buildForm();
   public color = 'gray';
   public priceList: string[] = [
@@ -24,13 +25,14 @@ export class CreateComponent {
     '$35000',
     '$90000',
   ];
+  public subscription$: Subscription;
 
   constructor(
     private fb: FormBuilder,
-    private matricsDataService: MatricsDataService
+    private matricsDataSubmissionService: MatricsDataSubmissionService
   ) {}
 
-  buildForm(): FormGroup {
+  public buildForm(): FormGroup {
     return this.fb.group({
       name: new FormControl('', [Validators.required]),
       model: new FormControl('', [
@@ -44,8 +46,10 @@ export class CreateComponent {
     });
   }
 
-  submitUserChoice(): void {
-    this.matricsDataService.createUserCarChoice(this.userCarChoice.value);
+  public submitUserChoice(): void {
+    this.subscription$ = this.matricsDataSubmissionService
+      .mutate(this.userCarChoice.value)
+      .subscribe();
   }
 
   public get name() {
@@ -57,5 +61,9 @@ export class CreateComponent {
 
   public get price() {
     return this.userCarChoice.get('price');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription$.unsubscribe();
   }
 }

@@ -13,8 +13,7 @@ export class AppController {
   }
 
   @Post('/')
-  postData(@Body() carchoice: CarDataDTO) {
-    console.log(carchoice, '---');
-    this.appService.postData(carchoice);
+  postData(@Body() matricsDataSubmission: CarDataDTO) {
+    this.appService.postData(matricsDataSubmission);
   }
 }

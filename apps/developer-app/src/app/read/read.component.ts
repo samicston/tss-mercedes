@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { CarDataDTO } from '../car-data.dto';
-import { MatricsDataService } from '../matrics-data.service';
+import { map, Observable, Subscription } from 'rxjs';
+import { GetAllMatricsDataService, MatricsData } from '../matrics-data.service';
 
 @Component({
   selector: 'tss-job-interview-read',
@@ -9,20 +8,14 @@ import { MatricsDataService } from '../matrics-data.service';
   styleUrls: ['./read.component.scss'],
 })
 export class ReadComponent implements OnInit, OnDestroy {
-  public usersCarChoiceList: CarDataDTO[] = [];
+  public usersCarChoiceList$: Observable<MatricsData[]>;
   public subscription$: Subscription;
-  constructor(private matricsDataService: MatricsDataService) {}
+  constructor(private getAllMatricsDataService: GetAllMatricsDataService) {}
 
   ngOnInit(): void {
-    this.getUsersCarChoiceList();
-  }
-
-  getUsersCarChoiceList(search?: string): void {
-    this.subscription$ = this.matricsDataService
-      .getListOfUsersCarChoice(search)
-      .subscribe((carChoiceList) => {
-        this.usersCarChoiceList = carChoiceList;
-      });
+    this.usersCarChoiceList$ = this.getAllMatricsDataService
+      .watch()
+      .valueChanges.pipe(map((result) => result.data.matricData));
   }
 
   ngOnDestroy(): void {

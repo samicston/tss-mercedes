@@ -1,29 +1,48 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CarDataDTO } from './car-data.dto';
+import { gql, Mutation, Query } from 'apollo-angular';
+
+export interface MatricsData {
+  name: string;
+  model: string;
+  price: string;
+  roadAgeFrom: Date | string;
+  roadAgeTo: Date | string;
+  withInsurance: string;
+}
+
+export interface Response {
+  matricData: MatricsData[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class MatricsDataService {
-  constructor(private http: HttpClient) {}
+export class MatricsDataSubmissionService extends Mutation {
+  override document = gql`
+    mutation matricsDataSubmission($id: Int!) {
+      matricsDataSubmission(id: $id) {
+        name
+        model
+        price
+        roadAgeFrom
+        roadAgeTo
+        withInsurance
+      }
+    }
+  `;
+}
 
-  createUserCarChoice(carData: CarDataDTO): Observable<number> {
-    console.log(carData, '+++d');
-    return this.http.post<number>(
-      '/api/center-matrix/',
-      carData
-    );
-  }
-
-  getListOfUsersCarChoice(
-    search: string | undefined
-  ): Observable<CarDataDTO[]> {
-    return search
-      ? this.http.get<CarDataDTO[]>(
-          `/api/center-matrix?${search}`
-        )
-      : this.http.get<CarDataDTO[]>(`/api/center-matrix`);
-  }
+export class GetAllMatricsDataService extends Query<Response> {
+  override document = gql`
+    query allmatricData {
+      matricData {
+        name
+        model
+        price
+        roadAgeFrom
+        roadAgeTo
+        withInsurance
+      }
+    }
+  `;
 }
